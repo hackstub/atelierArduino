@@ -48,8 +48,8 @@ void avancer(int vitesse, int duree)
 
 void tourner(float fraction)
 {
-  int vitesse = 2.5;
-  int duree = (int) (rotationEtalon * fraction);
+  int vitesse = 2.5 * fraction / abs(fraction); 
+  int duree = (int) (rotationEtalon * abs(fraction));
   
   initServos();
   servoRoueGauche.write(centerGauche+vitesse);
