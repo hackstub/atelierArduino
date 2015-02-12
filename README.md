@@ -1,8 +1,6 @@
 Atelier Arduino
 ===============
 
-Attention : le contenu est succeptible d'être modifié dans les prochains jours. Revenez plus tard pour une version plus finalisée.
-
 Ce répertoire Github est destiné à regrouper les documents et lister le matériel utilisé pour l'atelier Arduino. Vous pouvez retrouver les slides/transparents [ici](https://github.com/alexAubin/atelierArduino/raw/master/slides.pdf) et le code utilisé pour contrôler le robot [ici](https://github.com/alexAubin/atelierArduino/blob/master/codeRobot.ino). Ci-dessous se trouve la liste des composants nécessaire pour faire un robot ainsi que quelques liens pour télécharger le logiciel Arduino et de la documentation pour programmer.
 
 (Quelques) distributeurs d'électronique en France/Europe
