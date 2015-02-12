@@ -32,7 +32,7 @@ Liste des composants
 - 2 x Roue pour servomoteur (par exemple [ici](http://www.robotshop.com/eu/en/parallax-boe-bot-sumobot-wheel-tire.html))
 - Une bille folle (par exemple [ici](http://www.robotshop.com/eu/en/pololu-ball-caster-3-4-in-metal-ball.html), existe en plusieurs tailles)
 - Pile 9V + un boitier ou un clip (par exemple [ici](http://www.robotshop.com/eu/en/adafruit-9v-battery-case-switch-barrel-connector.html))
-- Un breadboard (voir [ici](http://www.robotshop.com/eu/en/catalogsearch/result/index/?cat=234&dir=asc&mode=list&order=price&q=solderless+breadboard) )
+- Un breadboard (voir [ici](http://www.robotshop.com/eu/en/catalogsearch/result/index/?cat=234&dir=asc&mode=list&order=price&q=solderless+breadboard))
 - Des fils (jumpers) male/male : (voir [ici](http://www.robotshop.com/eu/en/catalogsearch/result/index/?dir=desc&mode=list&order=stats_sales_order_count&q=jumper))
 - Un chassis, par exemple en bois, de la même largeur que les deux servomoteurs.
 - Des elastiques pour fixer le tout
@@ -40,7 +40,7 @@ Liste des composants
 Installation et utilisation du logiciel Arduino
 -----------------------------------------------
 
-- Télécharger le logicie Arduino [ici](http://arduino.cc/en/Main/Software)
+- Télécharger le logiciel Arduino [ici](http://arduino.cc/en/Main/Software)
 
 - La traduction française de la documentation n'est pas très complète ni optimisée pour le moment, mais vous pouvez la trouver [ici](http://playground.arduino.cc/French/Reference). Il existe cette présentation un peu plus complète que ce que j'ai fait : [ici](http://www.craslab.org/arduino/LivretArduinoFr06.pdf), surtout slide 10, 16, 17 et 34. (Pour ceux qui maîtrisent l'anglais, la [référence anglaise](http://arduino.cc/en/Reference/HomePage) en plutôt bien faite.)
 
