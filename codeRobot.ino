@@ -1,3 +1,8 @@
+//
+// Hackteliers Fevrier 2014
+// Code pour controller le robot
+//
+
 #include <Servo.h>  
 
 // #########################
