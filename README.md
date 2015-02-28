@@ -10,13 +10,16 @@ Arduino / Raspberry Pi / do-it-yourself
 - [Semageek](http://boutique.semageek.com/)
 - [Robotshop](http://www.robotshop.com/eu/en/)
 
-Electronique générale
-- Farnell
+Electronique générale à Strasbourg
+ - [Bric electronic](http://www.cables-piles-accus-electronique.fr/plan)
+
+Electronique générale (sur Internet)
+- [Mouser electronics](http://www.mouser.fr/)
+- [Farnell](http://fr.farnell.com/)
 - Radiospares
-- Mouser electronics
 - ...
 
-Distributeurs hors Europe (attention aux frais de douanes)
+Distributeurs hors Europe (produits cools, mais attention aux frais de douanes)
 - [Seeedstudio](http://www.seeedstudio.com/)
 - [Adafruit](http://www.adafruit.com/)
 - [Sparkfun](https://www.sparkfun.com/)
