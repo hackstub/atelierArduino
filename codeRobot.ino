@@ -1,5 +1,7 @@
 //
-// Hackteliers Fevrier 2014
+// Hackteliers @ Lycée Le Corbusier             / Fevrier 2015
+// Atelier arduino @ Mediathèque de Hautepierre / Octobre 2015
+//
 // Code pour controller le robot
 //
 
@@ -49,7 +51,7 @@ void avancer(int vitesse, int duree)
 // #  Fonction tourner  #
 // ######################
 
-#define rotationEtalon 7150 // time to do 360° 
+#define rotationEtalon 8870 // time to do 360° 
 
 void tourner(float fraction)
 {
