@@ -6,7 +6,7 @@
 // Code pou-r controller le robot
 //
 
-#include <Servo.h>  
+#include <Servo.h>
 
 // ###############################
 // #  Configuration des roues    #
@@ -49,9 +49,26 @@ void commandeRoues(int commandeGauche, int commandeDroite)
     servoRoueDroite.writeMicroseconds(CENTRE_ROUE_DROITE+commandeDroite);
 }
 
-void stopRoues() { commandeRoues(0,0); }
+void stopRoues ()
+{
+    commandeRoues(0,0);
+}
 
-void attendre(unsigned long duree) { delay(duree); }
+void stopRouesSlow(int comG, int comD)
+{
+    for (float f = 0.9 ; f >= 0.0 ; f -= 0.1)
+    {
+        commandeRoues(comG * f,comD * f);
+        attendre(0);
+    }
+    commandeRoues(0,0);
+    attendre(1000);
+}
+
+void attendre(unsigned long duree)
+{
+    delay(duree);
+}
 
 // ######################
 // #  Fonction avancer  #
@@ -68,11 +85,13 @@ void avancer(int distance)
     short int sens = (distance > 0) ? 1 : -1;
 
     float duree = abs((float) distance) / DISTANCE_PAR_SECONDE;
-    
-    commandeRoues(CORRECTION_AVANCER_GAUCHE + sens * VITESSE_PAR_DEFAUT, 
-                  CORRECTION_AVANCER_DROITE - sens * VITESSE_PAR_DEFAUT);
+
+    float comG = CORRECTION_AVANCER_GAUCHE + sens * VITESSE_PAR_DEFAUT;
+    float comD = CORRECTION_AVANCER_DROITE - sens * VITESSE_PAR_DEFAUT;
+
+    commandeRoues(comG, comD);
     attendre(duree * 1000);
-    stopRoues();
+    stopRouesSlow(comG,comD);
 }
 
 // ######################
@@ -82,13 +101,13 @@ void avancer(int distance)
 void tourner(float fraction)
 {
     short int sens = (fraction > 0) ? 1 : -1;
-    
+
     float duree =  fraction * 3.1415 * (float) (ECARTEMENT_ROUES) / DISTANCE_PAR_SECONDE;
 
-    commandeRoues(sens * VITESSE_PAR_DEFAUT,
-                  sens * VITESSE_PAR_DEFAUT);
+    int com = sens * VITESSE_PAR_DEFAUT;
+    commandeRoues(com, com);
     attendre(duree * 1000);
-    stopRoues();
+    stopRouesSlow(com,com);
 }
 
 // ###################################
@@ -113,7 +132,7 @@ void initUltrason()
 bool presenceObstacle()
 {
     attendre(100);
-  
+
     // Trigger emition
     digitalWrite(SENTRY_TRIGGER_PIN, HIGH);
     delayMicroseconds(100);
@@ -125,10 +144,10 @@ bool presenceObstacle()
     // Convert echo value to distance in centimeters
     long distance = echoValue / 58;
     if (distance == 5) distance = 3000;
-    
+
     Serial.println("distance");
-    Serial.println(distance);    
-    
+    Serial.println(distance);
+
     if (((int) distance) <= DISTANCE_OBSTACLE) return true;
     else                                       return false;
 }
@@ -150,28 +169,28 @@ void initBras()
 void activerBras(int sens = 1)
 {
     if (sens == 1)
-    { 
-      // Descendre d'un coup
-      brasServo.write(0);   
-      attendre(1000);
-      // Remonter doucement
-      for (int c = 0 ; c < 70 ; c++)
-      {
-         brasServo.write(c);
-         attendre(10);
-      }
+    {
+        // Descendre d'un coup
+        brasServo.write(0);
+        attendre(1000);
+        // Remonter doucement
+        for (int c = 0 ; c < 70 ; c++)
+        {
+            brasServo.write(c);
+            attendre(10);
+        }
     }
     else
     {
-      // Descendre (de l'autre cote) d'un coup
-      brasServo.write(170);   
-      attendre(1000); 
-      // Remonter doucement
-      for (int c = 170 ; c > 70 ; c--)
-      {
-         brasServo.write(c);
-         attendre(10);
-      }
+        // Descendre (de l'autre cote) d'un coup
+        brasServo.write(170);
+        attendre(1000);
+        // Remonter doucement
+        for (int c = 170 ; c > 70 ; c--)
+        {
+            brasServo.write(c);
+            attendre(10);
+        }
     }
 }
 
@@ -179,8 +198,8 @@ void activerBras(int sens = 1)
 // #  Le programme               #
 // ###############################
 
-void setup() 
-{ 
+void setup()
+{
     initRoues();
     initUltrason();
     initBras();
@@ -188,15 +207,16 @@ void setup()
     stopRoues();
 }
 
-void loop() 
-{ 
+void loop()
+{
 
     avancer(1000);
     attendre(1000);
     tourner(0.25);
     attendre(1000);
-    
+
 }
+
 
 
 
