@@ -30,10 +30,10 @@
 
 // Correction pour la fonction avancer si légère asymétrie entre gauche et droite
 #define CORRECTION_AVANCER_GAUCHE 0
-#define CORRECTION_AVANCER_DROITE 2
+#define CORRECTION_AVANCER_DROITE -11
 
 // Correction pour la fonction tourner
-#define CORRECTION_TOURNER 0.42
+#define CORRECTION_TOURNER 0.36
 
 // ###############################
 // # Gestion des moteurs / roues #
@@ -208,9 +208,6 @@ void avancerObstacle(int distance)
     // Boucle répétant une petite avancée et détection avec le capteur ultrason
     for (int n = distance / 100; n >= 0 ; n--) 
     {
-        // On demande au robot d'avancer de 10 cm
-        avancer(100);
-        
         // Si la présence de l'obstacle est confirmée execute le code suivant :"
         if (presenceObstacle()) 
         {
@@ -227,7 +224,8 @@ void avancerObstacle(int distance)
             // On met fin à la boucle
             n = 0;
         }
-        // Si on ne détecte pas d'obstacle on relance la boucle
+        // Si on ne détecte pas d'obstacle on demande au robot d'avancer de 10 cm
+        avancer(100);
     }
 }
 
@@ -254,7 +252,7 @@ void commandeBras(int com = 0)
 void initBras()
 {
     brasServo.attach(BRAS_PIN);
-    commandeBras(CENTRE_BRAS);
+    commandeBras();
 }
 // Fonction ordonnant au bras de s'abaisser
 void activerBras()
@@ -266,12 +264,12 @@ void activerBras()
     
 	// On lui demande de descendre d'une certaine valeur
     commandeBras(40);
-    attendre(1000);
+    attendre(800);
     stopBrasSlow(40);
 	// On lui demande de remonter d'une certaine valeur
-    commandeBras(-36);
+    commandeBras(-40);
     attendre(1000);
-    stopBrasSlow(-36);
+    stopBrasSlow(-40);
 	// On lui demande de s'arreter en lui demandant de revenir à sa valeur initiale (1500)
     commandeBras();
     
@@ -307,13 +305,14 @@ void setup()
 
 void loop()
 {
-    avancer(500);
-    attendre(1000);
-    tourner(0.25);
-    attendre(1000);
-    avancerObstacle(500);
-    attendre(1000);    
-    activerBras();
+//    avancer(500);
+//    attendre(1000);
+//    tourner(0.25);
+//    attendre(1000);
+      avancerObstacle(500);
+//    attendre(1000);    
+//    activerBras();
+
 }
 
 
