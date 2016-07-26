@@ -155,6 +155,146 @@ void tourner(float fraction)
     stopRouesSlow(com,com);
 }
 
+// ###################################
+// #  Gestion du module ultrason     #
+// ###################################
+
+// Define pin mapping
+#define SENTRY_TRIGGER_PIN 2
+#define SENTRY_ECHO_PIN    3
+#define DISTANCE_OBSTACLE  13
+
+// Initialisation du telemetre ultrason
+void initUltrason()
+{
+    // Init ultrason module
+    pinMode(SENTRY_TRIGGER_PIN, OUTPUT);
+    digitalWrite(SENTRY_TRIGGER_PIN, LOW);
+    pinMode(SENTRY_ECHO_PIN, INPUT);
+    Serial.begin(9600); 
+}
+
+// Renvoie True ou False suivant si un obstacle a ete detecte (c.f. DISTANCE_OBSTACLE)
+bool presenceObstacle()
+{
+    attendre(100);
+
+    // Emission du signal ultrason
+    digitalWrite(SENTRY_TRIGGER_PIN, HIGH);
+    delayMicroseconds(100);
+    digitalWrite(SENTRY_TRIGGER_PIN, LOW);
+
+    // Lecture de la valeur du capteur
+    long echoValue = pulseIn(SENTRY_ECHO_PIN, HIGH);
+
+    // Conversion de la valeur du capteur en centrimetre
+    long distance = echoValue / 58;
+    if (distance == 5) distance = 3000;
+
+    // (Optionnel) Affichage de la distance dans la console serie
+    Serial.println("Distance mesuree (cm) : ");
+    Serial.println(distance);
+
+    if (((int) distance) <= DISTANCE_OBSTACLE) 
+        return true;
+    else 
+        return false;
+}
+
+// Faire avancer le robot de la distance demandee tout en regardant s'il y
+// a un obstacle tous les 10 cm
+void avancerObstacle(int distance) 
+{
+    // Boucle répétant une petite avancée et détection avec le capteur ultrason
+    for (int n = distance / 100; n >= 0 ; n--) 
+    {
+        // On demande au robot d'avancer de 10 cm
+        avancer(100);
+        
+        // Si la présence de l'obstacle est confirmée execute le code suivant :"
+        if (presenceObstacle()) 
+        {
+            // Activer le petit bras jusqu'a ne plus voir l'obstacle
+            while (presenceObstacle()) 
+            { 
+                activerBras(); 
+                attendre(1000); 
+            }
+            
+            // Une fois la porte ouverte, on demande au robot de parcourir la distance restante 
+            avancer(n * 100);
+            
+            // On met fin à la boucle
+            n = 0;
+        }
+        // Si on ne détecte pas d'obstacle on relance la boucle
+    }
+}
+
+// ###############################
+// #  Gestion du bras            #
+// ###############################
+
+// Déclaration du servomoteur
+Servo brasServo;
+
+// Attribution du pin au bras
+#define BRAS_PIN 11
+
+// Centre du servomoteur ou celui ne bougent pas
+#define CENTRE_BRAS 1500
+
+// Fonction ordonnant au servomoteur du bras de tourner
+void commandeBras(int com = 0)
+{
+    brasServo.writeMicroseconds(CENTRE_BRAS+com); 
+}
+
+// Fonction d'initialisation du servomoteur du bras
+void initBras()
+{
+    brasServo.attach(BRAS_PIN);
+    commandeBras(CENTRE_BRAS);
+}
+// Fonction ordonnant au bras de s'abaisser
+void activerBras()
+{   
+	// On désactive les roues pour économiser de l'énergie
+    desinitRoues();
+    // On active le servomoteur du bras
+    initBras();
+    
+	// On lui demande de descendre d'une certaine valeur
+    commandeBras(40);
+    attendre(1000);
+    stopBrasSlow(40);
+	// On lui demande de remonter d'une certaine valeur
+    commandeBras(-36);
+    attendre(1000);
+    stopBrasSlow(-36);
+	// On lui demande de s'arreter en lui demandant de revenir à sa valeur initiale (1500)
+    commandeBras();
+    
+	// On désactive le servomoteur du bras
+    brasServo.detach();
+	// On réactive les roues
+    initRoues(); 
+}
+
+// Fonction ralentissant la vitesse du bras à la fin d'une fonction activerBras()
+void stopBrasSlow(int com)
+{
+    for (float f = 0.9 ; f >= 0.0 ; f -= 0.1)
+    {
+        brasServo.writeMicroseconds(CENTRE_BRAS + com * f);
+        attendre(50);
+    }
+    commandeBras();
+    attendre(1000);
+}
+
+
+
 // ###############################
 // #  Le programme               #
 // ###############################
@@ -162,6 +302,7 @@ void tourner(float fraction)
 void setup()
 {
     initRoues();
+    initUltrason();
 }
 
 void loop()
@@ -170,6 +311,9 @@ void loop()
     attendre(1000);
     tourner(0.25);
     attendre(1000);
+    avancerObstacle(500);
+    attendre(1000);    
+    activerBras();
 }
 
 
